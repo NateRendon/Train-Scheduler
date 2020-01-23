@@ -49,29 +49,28 @@ database.ref().on("child_added", function(childSnapshot){
     console.log("Frequency: " + freq);
 
     //TRAIN TIME CONVERSION
-    var freq = parseInt(freq);
+    let freq = parseInt(freq);
 	//CURRENT TIME
-	var currentTime = moment();
-	console.log("CURRENT TIME: " + moment().format('HH:mm'));
-	//FIRST TIME: PUSHED BACK ONE YEAR TO COME BEFORE CURRENT TIME
-	// var dConverted = moment(time,'hh:mm').subtract(1, 'years');
-	var dConverted = moment(childSnapshot.val().time, 'HH:mm').subtract(1, 'years');
+	let currentTime = moment();
+    console.log("CURRENT TIME: " + moment().format('HH:mm'));
+    //FIRST TIME: PUSHED BACK ONE YEAR TO COME BEFORE CURRENT TIME
+	let dConverted = moment(childSnapshot.val().time, 'HH:mm').subtract(1, 'years');
 	console.log("DATE CONVERTED: " + dConverted);
-	var trainTime = moment(dConverted).format('HH:mm');
+	let trainTime = moment(dConverted).format('HH:mm');
 	console.log("TRAIN TIME : " + trainTime);
 	
 	//DIFFERENCE B/T THE TIMES 
-	var tConverted = moment(trainTime, 'HH:mm').subtract(1, 'years');
-	var tDifference = moment().diff(moment(tConverted), 'minutes');
+	let tConverted = moment(trainTime, 'HH:mm').subtract(1, 'years');
+	let tDifference = moment().diff(moment(tConverted), 'minutes');
 	console.log("DIFFERENCE IN TIME: " + tDifference);
 	//REMAINDER 
-	var tRemainder = tDifference % freq;
+	let tRemainder = tDifference % freq;
 	console.log("TIME REMAINING: " + tRemainder);
 	//MINUTES UNTIL NEXT TRAIN
-	var minsAway = freq - tRemainder;
+	let minsAway = freq - tRemainder;
 	console.log("MINUTES UNTIL NEXT TRAIN: " + minsAway);
 	//NEXT TRAIN
-	var nextTrain = moment().add(minsAway, 'minutes');
+	let nextTrain = moment().add(minsAway, 'minutes');
     console.log("ARRIVAL TIME: " + moment(nextTrain).format('HH:mm A'));
     
     //TABLE DATA

@@ -4,16 +4,14 @@ const firebaseConfig = {
     apiKey: "AIzaSyDzk0gIInZcAQ-bx2g7qItDp_nYQh7_xX0",
     authDomain: "train-scheduler-bac0e.firebaseapp.com",
     databaseURL: "https://train-scheduler-bac0e.firebaseio.com",
-    projectId: "train-scheduler-bac0e",
     storageBucket: "train-scheduler-bac0e.appspot.com",
     messagingSenderId: "743089567427",
-    appId: "1:743089567427:web:024103fa03a70e0d1c9476",
-    measurementId: "G-TQ53PZM2XS"
+    
   };
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
   // Variables
-  let database= firebase.database();
+  let database = firebase.database.ref();
 
 $("#submit").on("click", function() {
 
@@ -29,7 +27,7 @@ $("#submit").on("click", function() {
         dest: dest,
         time: time,
         freq: freq,
-        timeAdded: firebase.database.ServerValue.TIMESTAMP
+        timeAdded: firebase.database.ref.ServerValue.TIMESTAMP
     });
     // NO REFRESH
     $("input").val('');
@@ -49,7 +47,7 @@ database.ref().on("child_added", function(childSnapshot){
     console.log("Frequency: " + freq);
 
     //TRAIN TIME CONVERSION
-    let freq = parseInt(freq);
+    let frequency = parseInt(freq);
 	//CURRENT TIME
 	let currentTime = moment();
     console.log("CURRENT TIME: " + moment().format('HH:mm'));
@@ -64,10 +62,10 @@ database.ref().on("child_added", function(childSnapshot){
 	let tDifference = moment().diff(moment(tConverted), 'minutes');
 	console.log("DIFFERENCE IN TIME: " + tDifference);
 	//REMAINDER 
-	let tRemainder = tDifference % freq;
+	let tRemainder = tDifference % frequency;
 	console.log("TIME REMAINING: " + tRemainder);
 	//MINUTES UNTIL NEXT TRAIN
-	let minsAway = freq - tRemainder;
+	let minsAway = frequency - tRemainder;
 	console.log("MINUTES UNTIL NEXT TRAIN: " + minsAway);
 	//NEXT TRAIN
 	let nextTrain = moment().add(minsAway, 'minutes');
@@ -79,7 +77,7 @@ $('#currentTime').text(currentTime);
 $('#trainTable').append(
 		"<tr><td id='nameDisplay'>" + childSnapshot.val().name +
 		"</td><td id='destDisplay'>" + childSnapshot.val().dest +
-		"</td><td id='freqDisplay'>" + childSnapshot.val().freq +
+		"</td><td id='freqDisplay'>" + childSnapshot.val().frequency +
 		"</td><td id='nextDisplay'>" + moment(nextTrain).format("HH:mm") +
 		"</td><td id='awayDisplay'>" + minsAway  + ' minutes until arrival' + "</td></tr>");
  },
